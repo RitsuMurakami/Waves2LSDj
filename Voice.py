@@ -2,20 +2,27 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import math
+import argparse
 from PIL import Image
 
+parser = argparse.ArgumentParser(description="Hz to LSDj wave")
+parser.add_argument("-f", help="name of csv file")
+args = parser.parse_args()
+
+if args.f == None:
+    raise ValueError
+
+df = pd.read_csv(args.f)
+A = df['A'].values
+f = df['f'].values
+
+g = np.zeros((33, 33))
 
 def wave(A, f, rad):
     x = 0
     for i, k in zip(A, f):
         x += i  * np.sin(k * rad)
     return x
-
-df = pd.read_csv('a.csv')
-A = df['A'].values
-f = df['f'].values
-
-g = np.zeros((33, 33))
 
 def Cul(DIVIDER):
     for i in range(33):
