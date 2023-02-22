@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import math
 from PIL import Image
 
 
@@ -10,32 +11,36 @@ def wave(A, f, rad):
         x += i  * np.sin(k * rad)
     return x
 
-df = pd.read_csv('i.csv')
+df = pd.read_csv('a.csv')
 A = df['A'].values
 f = df['f'].values
 
-DIVIDER = 128
 g = np.zeros((33, 33))
 
-A = [0.07, 0.09, 0.08, 0.19, 0.08]
-f = [260, 520, 780, 1040, 1300]
+def Cul(DIVIDER):
+    for i in range(33):
+        rad = 2 * np.pi * i / DIVIDER
+        m = wave(A, f, rad)
+        m = round(16 * m) + 16
+        #m = math.ceil(16 * m) + 16
+        if m > DIVIDER: m = DIVIDER
+        g[m][i] = 1
 
-for i in range(33):
-    rad = 2 * np.pi * i / DIVIDER
-    m = wave(A, f, rad)
-    m = int(16 * m) + 16
-    if m > DIVIDER: m = DIVIDER
-    g[m][i] = 1
+def OutPut(DIVIDER):
+    # y
+    print(f'----DIVIDER: {DIVIDER} ----')
+    for i in range(0, 33):
+        p = str(i - 16).zfill(3)
+        p += ' '
+        # x
+        for k in range(0, 32):
+            if g[32 - i][k]:
+                p += '■ '
+            else:
+                p += '□ '
+        print(p)
 
-# y
-for i in range(0, 33):
-    p = str(i - 16).zfill(3)
-    p += ' '
-    # x
-    for k in range(0, 33):
-        if g[32 - i][k]:
-            p += '■ '
-        else:
-            p += '□ '
-    print(p)
-
+for i in range(5, 8):
+    g = np.zeros((33, 33))
+    Cul(2 ** i)
+    OutPut(2 ** i)
