@@ -5,6 +5,7 @@ import math
 import argparse
 from PIL import Image
 
+# args
 parser = argparse.ArgumentParser(description="Hz to LSDj wave")
 parser.add_argument("-f", help="name of csv file")
 args = parser.parse_args()
@@ -12,18 +13,21 @@ args = parser.parse_args()
 if args.f == None:
     raise ValueError
 
+# read csv file
 df = pd.read_csv(args.f)
 A = df['A'].values
 f = df['f'].values
 
 g = np.zeros((33, 33))
 
+# Synthesise sin waves.
 def wave(A, f, rad):
     x = 0
     for i, k in zip(A, f):
         x += i  * np.sin(k * rad)
     return x
 
+# Drop sin waves into the LSDj wave grid.
 def Cul(DIVIDER):
     for i in range(33):
         rad = 2 * np.pi * i / DIVIDER
@@ -47,6 +51,7 @@ def OutPut(DIVIDER):
                 p += '□ '
         print(p)
 
+# Output with several values
 for i in range(5, 8):
     g = np.zeros((33, 33))
     Cul(2 ** i)
