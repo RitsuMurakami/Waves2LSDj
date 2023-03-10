@@ -1,4 +1,4 @@
-# Wavs2LSDj
+# Waves2LSDj
 
 # 概要
 
