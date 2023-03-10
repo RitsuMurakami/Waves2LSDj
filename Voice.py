@@ -6,7 +6,7 @@ import argparse
 from PIL import Image
 
 # args
-parser = argparse.ArgumentParser(description="Hz to LSDj wave")
+parser = argparse.ArgumentParser(description="A and f to LSDj wave")
 parser.add_argument("-f", help="name of csv file")
 args = parser.parse_args()
 
